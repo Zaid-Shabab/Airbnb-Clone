@@ -1,0 +1,273 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  #filters {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    justify-content: flex-start;
+  }
+
+  #filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter {
+    text-align: center;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .filter p {
+    font-size: 0.8rem;
+  }
+
+  .tax-info {
+    display: none;
+  }
+
+  .tax-toggle {
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: max-content;
+  }
+
+  .hidden-filter {
+  display: none;
+  transition: all 0.3s ease;
+}
+</style>
+
+<div id="filters">
+
+  <div class="filter">
+    <div><i class="fa-solid fa-fire"></i></div>
+    <p>Trending</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-bed"></i></div>
+    <p>Rooms</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-mountain-city"></i></div>
+    <p>Iconic Cities</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-mountain"></i></div>
+    <p>Mountain</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-brands fa-fort-awesome"></i></div>
+    <p>Castles</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-person-swimming"></i></div>
+    <p>Amazing Pools</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-campground"></i></div>
+    <p>Camping</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-cow"></i></div>
+    <p>Farms</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-snowflake"></i></div>
+    <p>Arctic</p>
+  </div>
+
+  <div class="filter">
+    <div><i class="fa-solid fa-camera"></i></div>
+    <p>Amazing Views</p>
+  </div>
+
+  <!-- Hidden Filters -->
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-heart"></i></div>
+    <p>Romantic</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-tree"></i></div>
+    <p>Forest</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-landmark"></i></div>
+    <p>Historical Places</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-umbrella-beach"></i></div>
+    <p>Beach</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-water"></i></div>
+    <p>Lake</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-sun"></i></div>
+    <p>Desert</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-earth-americas"></i></div>
+    <p>Islands</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-gem"></i></div>
+    <p>Luxury</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-paw"></i></div>
+    <p>Pet Friendly</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-tree"></i></div>
+    <p>Tree Houses</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-person-skiing"></i></div>
+    <p>Skiing</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-ship"></i></div>
+    <p>Boating</p>
+  </div>
+
+  <div class="filter hidden-filter">
+    <div><i class="fa-solid fa-mountain"></i></div>
+    <p>Caves</p>
+  </div>
+
+  <!-- More Button -->
+
+  <div class="filter" id="more-btn">
+    <div><i class="fa-solid fa-ellipsis"></i></div>
+    <p>More</p>
+  </div>
+
+
+  <div class="filter" id="less-btn" style="display: none;">
+    <div><i class="fa-solid fa-angle-left"></i></div>
+    <p>Less</p>
+</div>
+
+  <!-- Tax Toggle -->
+
+  <div class="tax-toggle">
+    <div class="form-check-reverse form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+      <label class="form-check-label" for="switchCheckDefault">
+        Display total after taxes
+      </label>
+    </div>
+  </div>
+
+</div>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+  <% for(let listing of allListings) { %>
+
+  <a href="/listings/<%= listing._id %>" class="listing-link">
+
+    <div class="card col listing-card">
+
+      <img
+        src="<%= listing.image.url %>"
+        class="card-img-top"
+        alt="listing_image"
+        style="height:20rem;"
+      >
+
+      <div class="card-img-overlay"></div>
+
+      <div class="card-body">
+        <p class="card-text">
+          <b><%= listing.title %></b><br>
+          ₹ <%= listing.price.toLocaleString("en-IN") %> / night
+          <i class="tax-info">&nbsp;&nbsp;+18% GST</i>
+        </p>
+      </div>
+
+    </div>
+
+  </a>
+
+  <% } %>
+</div>
+
+<script>
+
+const taxSwitch = document.getElementById("switchCheckDefault");
+
+taxSwitch.addEventListener("change", () => {
+
+  const taxInfo = document.getElementsByClassName("tax-info");
+
+  for (let info of taxInfo) {
+
+    if (info.style.display !== "inline") {
+      info.style.display = "inline";
+    } else {
+      info.style.display = "none";
+    }
+
+  }
+
+});
+
+const moreBtn = document.getElementById("more-btn");
+const lessBtn = document.getElementById("less-btn");
+const hiddenFilters = document.querySelectorAll(".hidden-filter");
+
+moreBtn.addEventListener("click", () => {
+    hiddenFilters.forEach(filter => {
+        filter.style.display = "block";
+    });
+
+    moreBtn.style.display = "none";
+    lessBtn.style.display = "block";
+});
+
+lessBtn.addEventListener("click", () => {
+    hiddenFilters.forEach(filter => {
+        filter.style.display = "none";
+    });
+
+    lessBtn.style.display = "none";
+    moreBtn.style.display = "block";
+});
+
+</script>
